@@ -112,3 +112,107 @@
 - Consider different voices for different types of messages
 - Balance natural speech with efficiency
 - Use Amazon Polly's SSML tags in Connect to create natural-sounding voice interactions that enhance caller satisfaction
+
+## Security Implementation
+- Configure security profiles with appropriate permission level
+- Implement advanced authentication methods for agent access
+- Apply data protection techniques for customer information
+- Implement compliance contact centers requirements
+### Security Profile Configuration
+- Security profiles in Amazon Connect control what actions users can perform within the system
+    - Permission sets that determine what each person can see and do
+    - New permissions are added on a regular basis - revisit your permission configurations to ensure users can access the latest Amazon Connect features
+- Built around [granular permissions](https://docs.aws.amazon.com/connect/latest/adminguide/connect-security-profiles.html) grouped into categories:
+    - Contact Control Panel (CCP) access
+    - Routing profiles and queue management
+    - User management
+    - Contact flows and modules
+    - Metrics and reporting
+    - Phone numbers and prompts
+- Key points
+    - **Profile name**: name of the security profile that is displayed when assigned to a user
+    - **Feature set name**: when in the expanded state, the feature set will show the available permissions to assign. Amazon Q is in the expanded state while the other feature names like Routing are not expanded
+    - **Function name**: function name for the permissions controlled by the row. The selected boxes in each row indicate which type of permission is granted for that specific function
+    - **Permission assignment**: Each column represents an assignable permission type. Not all functions have all permission types available and those permissions will be unavailable to select. Selecting a permission type adds it to the security profile, granting the user that permission
+- Default security profiles
+    - **Admin**: Grants administrators permission to perform a majority of actions
+    - **Agent**: Grants agents permission to access the Contact Control Panel (CCP)
+    - **Call center manager**: Grants managers permission to perform actions related to user management, metrics, and routing
+    - **Quality analyst**: Grants analysts permission to perform actions related to metrics
+- Best practices
+    - Document the purpose of each custom security profile
+    - Implement approval processes for granting admin access
+    - Review profiles when staff roles change
+    - Create specialized profiles rather than giving broad access
+    - Regularly audit who has access to sensitive functions
+### Advanced Authentication Methods
+- Store user accounts with Amazon Connect
+    - Uses the basic username and password system.
+    - Best practice recommends using a method with additional security measures (an existing directory or SAML 2.0)
+- Link to an existing directory service associated with the AWS account
+    - Users can log in to Amazon Connect by using their corporate credentials
+    - AWS Directory Service supports the following directories for Amazon Connect:
+        - [AWS Directory Service for Microsoft Active Directory](https://docs.aws.amazon.com/directoryservice/latest/admin-guide/directory_microsoft_ad.html) – run Active Directory as a managed service
+        - [Active Directory Connector](https://docs.aws.amazon.com/directoryservice/latest/admin-guide/directory_ad_connector.html) – directory gateway to redirect directory requests to on-premises Active Directory
+        - [Simple Active Directory](https://docs.aws.amazon.com/directoryservice/latest/admin-guide/directory_simple_ad.html) – standalone managed directory that is powered by a Samba 4 Active Directory compatible server
+- Use SAML 2.0-based authentication
+    - Integrate with identity providers (Okta, Azure AD, or AWS IAM Identity Center) for single sign-on capabilities, centralized identity management, enhanced authentication controls
+- Identity management settings cannot be changed after instance creation
+    - To modify these settings, create a new instance
+    - Deleting an instance permanently removes all configuration settings and metrics data
+- Best practices
+    - Enable MFA for all user types
+    - Implement single sign-on for a seamless user experience
+    - Enforce strong password policies
+    - Set appropriate session timeouts
+    - Monitor for unusual login patterns
+    - Implement thorough offboarding processes when employees leave
+
+## Data Protection Techniques
+- Data protection layers
+    - **Encryption in transit**: All communication between browsers and Amazon Connect uses TLS
+    - **Encryption at rest**: Customer data stored in AWS is encrypted by default
+    - **Call recording encryption**: AWS encryption keys configured at instance creation are used to protect recorded conversations
+    - **Sensitive data handling**: Use encryption in a `Store customer input` block for sensitive DTMF information that is obtained in the IVR
+    - **Access controls**: Security profiles, tag-based access controls and hierarchy-based access controls limit who can see what information
+- Handling sensitive data
+    1. Use flow attributes for temporary storage of sensitive information
+    2. Implement pause/resume recording for payment information collection
+    3. Configure AWS encryption keys for recorded conversations
+    4. Set up storage retention policies for contact records and recordings
+- Payment card protection example
+    1. The flow detects when the payment section begins
+    2. Recording is automatically paused
+    3. The customer enters their card details by secure keypad input (not spoken)
+    4. The data is processed without being stored in Amazon Connect
+    5. Recording resumes after the sensitive information collection is complete
+- Best practices
+    - Minimize collection of sensitive data
+    - Use secure input methods for confidential information
+    - Implement appropriate retention policies
+    - Regularly audit access to sensitive data
+    - Follow relevant compliance standards for your industry
+    - Consider using AWS Key Management Service (KMS) customer managed keys for additional control
+
+## Compliance Implementation
+- Common compliance standards
+    - **PCI DSS**: Payment Card Industry Data Security Standard (PCI DSS) for payment card processing
+    - **HIPAA**: Health Insurance Portability and Accountability Act (HIPAA) for healthcare information
+    - **GDPR**: General Data Protection Regulation (GDPR) for data protection and privacy in Europe
+    - **CCPA**: California Consumer Privacy Act (CCPA)is a state-level data privacy law in California
+    - **SOC**: System and Organization Controls (SOC) is a suite of reports produced by service organizations. These reports demonstrate the effectiveness of the service organization's internal controls
+    - **TCPA**: Telephone Consumer Protection Act of 1991, a U.S. law that regulates telemarketing calls, text messages, and faxes to protect consumers from unwanted communications
+- Building compliant contact centers
+    - **Understand your requirements**: Identify which regulations apply to your business
+    - **Design flows with compliance in mind**: Build processes that meet regulatory needs
+    - **Implement appropriate controls**: Technical and procedural safeguards prevent accidental or malicious changes
+    - **Document your approach**: Maintain evidence of compliance
+    - **Audit regularly**: Verify continued compliance
+- Verify that each AWS service used in your Amazon Connect contact center is in scope for the compliance standards required - https://docs.aws.amazon.com/connect/latest/adminguide/compliance-validation.html
+- Best practices
+    - Engage compliance experts early in your design process
+    - Train agents on compliance requirements
+    - Regularly test your controls
+    - Keep up with changing regulations
+    - Document everything
+    - Consider AWS Artifact for access to AWS compliance reports
