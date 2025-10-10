@@ -216,3 +216,86 @@
     - Keep up with changing regulations
     - Document everything
     - Consider AWS Artifact for access to AWS compliance reports
+
+## System Reliability
+- Identify backup strategies for critical contact center components
+- Explain failover principles to maintain service during disruptions
+- Identify recovery processes for various failure scenarios
+- https://docs.aws.amazon.com/connect/latest/adminguide/disaster-recovery-resiliency.html
+### Understanding the Amazon Connect Reliability Model
+- Terminology:
+    - **High availability**: Systems designed to operate continuously without failure
+    - **Fault tolerance**: Ability to continue operating when components fail
+    - **Disaster recovery**: Processes to recover from major disruptions
+    - **Business continuity**: Broader strategies to maintain operations during disruptions
+    - **Availability Zone (AZ)**: An isolated data center with independent power, cooling, and networking that enables high-availability application deployments
+    - **Region**: A logical group of Availability Zones in a geographic area offering the complete set of AWS services and infrastructure
+- Limitations:
+    - Regional AWS outages affecting all Availability Zones
+    - Network connectivity issues between your agents and AWS
+    - Integration points with external systems
+    - Agent workstation or browser problems
+- Amazon Connect's built-in reliability features:
+    - **Global Infrastructure**: Leverages AWS's globally distributed infrastructure for high availability
+    - **Multi-AZ Architecture**: Automatically operates across multiple Availability Zones within a Region
+    - **Automatic Scaling**: Dynamically scales to handle fluctuating contact volumes without manual intervention
+    - **Service Quotas**: Configurable limits to protect system stability and performance
+    - **Phone Number Redundancy**: Supports multiple carrier connections for inbound telephony traffic
+### Backup Strategies
+- **Plan your backup**: cloud solutions require thoughtful backup planning to protect against data loss, configuration errors, and service disruptions
+- **Identify what to back up**:
+    - Configuration data: flow definitions (flows, whisper flows, hold flows), user accounts and security profiles, queue configurations and routing profiles, phone number assignments
+    - Operational data: recorded conversations, contact records, agent performance metrics, custom reports
+- **Select backup methods**:
+    - **API-based backups**: Use the Amazon Connect Application Programming Interface (API) to export configuration data
+    - **Amazon S3 bucket replication**: For recorded conversations and exported reports, use built in replication functions
+    - **Database backups**: For any external databases integrated with Amazon Connect, backup according to the needs of the database
+    - **Documentation**: Maintain current documentation of configurations and settings for any custom settings in Amazon Connect
+- **Implement the backup strategy**:
+    - Weekly exports of all flow configurations using the API
+    - S3 bucket cross-Region replication for all recordings and reports
+    - Daily backups of any Lambda functions and integrated databases
+    - Proper versioning of all custom code in a repository like GitHub
+- **Test and maintain your backups**:
+    - Automate backup processes, where possible
+    - Test restoration procedures regularly
+    - Maintain multiple backup copies
+    - Store backups in multiple AWS Regions
+    - Document all backup and recovery procedures
+    - Include backups in your security planning
+- https://docs.aws.amazon.com/prescriptive-guidance/latest/security-best-practices/strategy.html
+
+## Failover and Recovery Principles
+- Best practices
+    - Regularly test failover procedures
+    - Train agents on procedures to implement depending on the severity of the outage
+    - Document clear decision criteria for initiating failover
+    - Consider automated monitoring to detect issues
+    - Make sure that integrations work in both systems
+    - Test with partial traffic shifts periodically
+- Recovery
+    - **Integration failures**: When connections to external systems fail
+    - **Flow errors**: When contact flows have logical or configuration issues
+    - **Agent connectivity**: When agents can't access the Amazon Connect Contact Control Panel
+    - **Service disruptions**: When cloud services experience a problem
+- https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/disaster-recovery-options-in-the-cloud.html
+
+## Availability Optimization
+- Availability enhancement strategies
+    - **Agent connectivity**: Make sure that agents have reliable internet connections
+    - **Browser compatibility**: Test and validate supported browsers
+    - **Integration resilience**: Build retry and circuit breaker patterns into integrations
+    - **Graceful degradation**: Design flows that can function with reduced capabilities
+    - **Monitoring and alerting**: Detect issues before they affect customers
+- High availability patterns
+    - **Circuit breakers**: Prevent cascading failures when integrations fail
+    - **Retry with backoff**: Automatically retry failed operations with increasing delays
+    - **Fallback responses**: Provide default responses when lookups fail
+    - **Asynchronous processing**: Decouple time-sensitive operations
+- Best practices
+    - Test under various failure conditions
+    - Implement comprehensive monitoring
+    - Design for partial functionality during disruptions
+    - Regularly review and update reliability plans
+    - Consider the reliability of all integrated components
+    - Plan for both technical and operational resilience
