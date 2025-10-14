@@ -71,3 +71,21 @@
     - Ensuring that agents have proper tools and training
     - Monitoring quality metrics (handle time, first-call resolution, customer satisfaction)
     - Supporting work-life balance through flexible scheduling options
+### Performance Management
+- [Amazon Connect Contact Lens](https://docs.aws.amazon.com/connect/latest/adminguide/contact-lens.html) provides contact center analytics and quality management capabilities
+    - You can use these to monitor, measure, and continuously improve contact quality and agent performance for a better overall customer experience:
+        - Speech analytics to identify customer sentiment
+        - Performance dashboards highlighting areas for improvement
+        - Compliance monitoring for required disclosures or procedures
+- When performance gaps are identified:
+    - Review specific interactions using recordings and transcripts
+        - For example: "Let's listen to this call where the customer needed to escalate. What approaches might have resolved their issue earlier?"
+    - Provide specific, actionable feedback
+        - Instead of "Your handle time is too high," try "I noticed that you spent extra time searching for information. Let's look at some navigation shortcuts that could help."
+    - Create personalized development plans
+        - For agents struggling with chat efficiency, you might assign specific training on multitasking and template responses
+### Supervisor tools
+#### Monitoring capabilities
+- **Live capabilities**: Supervisors can silently monitor calls and chat conversations for quality assurance.
+- **Barging capabilities**: Supervisors can **barge** (join the conversation when needed)
+- **Supervisor state changes**: Supervisors can monitor agent states (with appropriate permissions given, also change the state of the agents), request agents to log out and adjust routing when service levels are at risk (moving agents to queues or deflecting calls to callbacks or voicemail if set up)
