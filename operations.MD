@@ -89,3 +89,55 @@
 - **Live capabilities**: Supervisors can silently monitor calls and chat conversations for quality assurance.
 - **Barging capabilities**: Supervisors can **barge** (join the conversation when needed)
 - **Supervisor state changes**: Supervisors can monitor agent states (with appropriate permissions given, also change the state of the agents), request agents to log out and adjust routing when service levels are at risk (moving agents to queues or deflecting calls to callbacks or voicemail if set up)
+#### Reports and dashboards
+- **Real-time metrics report**: Monitor current [agent states](https://docs.aws.amazon.com/connect/latest/adminguide/metrics-agent-status.html) (Available, On contact, After contact work, and so on), see how long agents have been in each state, view which contacts that agents are handling, take immediate action from a single interface
+    - Available is the only status that will allow agents to take inbound calls; custom statuses can be added to track how offline time is spent
+- **Team performance visualization**: With appropriate permissions, supervisors can create custom dashboards and reports that provide queue metrics (service level, abandonment rate), agent metrics (occupancy, adherence) and team comparison data (agent performance across cohorts, time)
+- **Agent adherence**: Supervisors should also regularly review schedule adherence metrics to ensure that agents are following their assigned schedules
+### Team Optimization Strategies
+- **Workforce distribution**: Match agent strengths to contact types, balance workload across teams., consider cross-training to increase flexibility
+- **Schedule adherence**: Track metrics like login and logout times and adherence percentage, identify patterns of nonadherence, address issues through coaching and clear expectations
+- **Team structure optimization**: Consider specialized instead of universal agent models, implement pod structures for complex customer journeys, balance supervisor-to-agent ratios for effective oversight
+- **Continuous improvement approach**: Regularly analyze team performance data, identify bottlenecks and inefficiencies, test new approaches on a small scale, measure results and adjust, roll out successful changes more broadly
+
+## Queue and Routing Optimization
+### Queue management
+- **Queue configuration essentials**: Hours of operation and time zone settings (24/7 to support global customers, for example), outbound caller ID configuration (your support number so that customers recognize callbacks), [maximum contacts limit](https://docs.aws.amazon.com/connect/latest/adminguide/set-maximum-queue-limit.html) (50 to prevent excessive wait times, for example), Quick connect settings
+- **Queue prioritization strategies**: Customer segments (premium or standard), issue urgency or impact, channel preferences, wait time thresholds
+- **Queue management tools**: Amazon Connect performance dashboards showing real-time and historical metrics, Amazon Connect Flow blocks to check conditions before routing to queues, Amazon CloudWatch alarms to alert when thresholds are exceeded
+- **Queue overflow handling**: Automatic callbacks to maintain the place in line, overflow to secondary queues after wait thresholds, alternative channel offers (for example, suggesting chat when call queues are long)
+- A common mistake is creating too many specialized queues, which can fragment your agent pool and actually increase wait times. Instead, consider fewer queues with more sophisticated routing rules
+### Routing pattern selection
+#### Common routing patterns
+- **Standard queue-based routing**: Contacts placed in queues and distributed to available agents, simple to implement and understand, works well for straightforward contact handling
+- **Skills-based routing**: Routes contacts to agents with specific skills or proficiencies, improves first-contact resolution and customer satisfaction - requires detailed agent skills inventory
+- **Proficiency or attribute-based routing**: Uses customer attributes to determine routing, personalize experience based on customer attributes - requires integration with customer data sources
+#### Selecting the right approach
+- Group agents with similar skills into routing profiles to increase efficiency and flexibility
+- Contact complexity and specialization requirements:
+    - Agent skill variations within your team
+    - Business priorities (speed or expertise)
+    - Available customer data
+- Routing profiles link queues to agents and determine the following:
+    - Which queues an agent can receive contacts from
+    - Channel concurrency (how many contacts an agent can handle simultaneously)
+    - Queue priority (which queue to pull from first when several have waiting contacts)
+- https://docs.aws.amazon.com/connect/latest/adminguide/connect-queues.html
+### Volume handling strategies
+- Managing peak volumes:
+    - **Queue-based overflow**: Automatically route contacts to backup queues when primary queues reach capacity
+    - **Callbacks**: Offer customers the option to receive a callback rather than waiting in queue
+    - **Self-service options**: Promote automated solutions during high-volume periods
+- Dynamic staffing adjustments:
+    - Cross-trained agents can shift between channels or queues based on volume
+    - Part-time or on-call agents can provide additional coverage during peaks
+    - Supervisors can temporarily handle contacts during unexpected volume spikes
+- Proactive volume management:
+    - Use historical data to predict high-volume periods
+    - Schedule preventative maintenance and updates during known low-volume times
+    - Coordinate with marketing and other departments to avoid creating unexpected spikes
+- Emergency response plans:
+    - Activate additional staff through on-call programs
+    - Implement emergency messaging about known issues
+    - Temporarily adjust service level expectations
+    - Deploy targeted self-service solutions
