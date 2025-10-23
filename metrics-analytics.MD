@@ -26,7 +26,7 @@
 - **Ignoring quality**: a fast agent isn't always a good agent if they are not resolving customer issues
 - **Using metrics punitively**: metrics should be tools for improvement, not punishment
 #### Using metrics to improve customer experience
-- **Set realistic expectations**: if your average wait time is 5 minutes, tell customers upfront rather than saying, "Just a moment"
+- **Set realistic expectations**: if your average wait time is 5 minutes, tell customers upfront rather than saying "Just a moment"
 - **Offer alternatives**: when queue metrics show long waits, [offer callback options or suggest digital channels](https://docs.aws.amazon.com/connect/latest/adminguide/setup-queued-cb.html)
 - **Address root causes**: If abandonment rates are high, investigate whether certain issues could be resolved through self-service
 ### Making Data-Driven Decisions
@@ -94,3 +94,155 @@
 - **Immediate staffing adjustments**: If queues are building, request agents on break to return early; if the volume is unexpectedly low, offer voluntary time off; shift agents between channels based on current demand
 - **Queue interventions**: Implement queue callback options when wait times exceed thresholds; adjust routing priorities to focus on the oldest contacts; temporarily redirect new contacts to overflow queues
 - **Agent support**: Provide real-time coaching to agents struggling with complex contacts; help agents who appear stuck in error states; recognize agents who are handling high volumes efficiently
+
+## Custom Report Design and Management
+### Creating Historical Metrics Reports
+- **Contact record-driven metrics**: based on formed contact record records (for example, contact record-driven metrics are **Service level**, **Agent interaction time**, and **After contact work time**)
+- **Agent activity-driven metrics**: based on agent activities like agent status changes, agent conversation changes (for example, an agent activity-driven metric is **Non-Productive Time**)
+- **Access historical metrics**: Login to the Amazon Connect Admin Workspace and navigate to Analytics and optimization > Historical metrics
+    - Requires permission to access metric data - security profiles `CallCenterManager` and `QualityAnalyst` include this permission
+- **Choose report type**:
+    - **Queue-based reports**: Focus on contact flow and wait times, such as `Contact` and `Agent metrics`
+    - **Agent-based reports**: Focus on individual performance, such as `Agent performance` and `Agent activity audit report`
+    - **Phone numbers report**: Analyze performance by contact entry point per number
+    - **Email addresses report**: Analyze performance by contact entry point per email address
+    - **Cases report**: Focus on case activities, such as `Interval` and `Snapshot metrics`
+- **Selecting interval and time range**:
+    - **Interval**: How to divide the data (15 minutes, 30 minutes, Daily, Total)
+    - **Time Zone**: Select your time zone or location (UTC or London)
+    - **Time range**: Rolling periods (Today, Last 24 hours, Yesterday, Last 2/3 days, or Custom time range)
+- **Advanced customizations**:
+    - On the **Groupings** tab, one can choose up to five groupings
+        - For multiple grouping options, the data is grouped by the first grouping option and then by the subsequent grouping options
+    - On the **Filters** tab, one can specify filters to scope the data to be included in the report
+        - Available filters depend on the groupings selected
+- **Choose report metrics and fields** to display on the report
+    - An exclamation mark (!) is displayed next to any metrics that are not available based on the groupings selected
+### Advanced Filtering and Grouping
+#### Filtering options
+- **Queue filters**: Include only specific queues (for example, Technical Support and Billing queues only)
+    - When to use: When you want to focus analysis on particular service areas or compare performance between different types of contacts
+    - Example: To analyze how your Premium Customer queue performs compared to standard queues, filter to include only those specific queue types
+- **Agent filters**: Include only specific agents or teams
+    - When to use: When evaluating individual performance or team comparisons or when tracking new hire progress
+    - Example: To analyze how your new trainee team is performing, filter to include only agents hired in the last 30 days
+- **Channel filters**: Focus on particular channels, such as voice, chat, or email
+    - When to use: When comparing performance across different communication methods or troubleshooting issues with a specific channel
+    - Example: If customer feedback suggests chat response times are too slow, create a report filtered to chat interactions only
+- **Contact attribute filters**: Filter by custom attributes defined, such as customer tier or issue type
+    - When to use: When analyzing performance for specific customer segments or contact types
+    - Example: To analyze how efficiently your team resolves technical issues compared to billing questions, filter by the Contact reason attribute
+- **Time filters**: Focus on specific time periods, such as business hours only
+    - When to use: When analyzing performance differences between time periods or optimizing staffing for peak hours
+    - Example: To improve staffing during your busiest period, create a report filtered to show only contacts between 10 am–2 pm
+#### Grouping options
+- **Queue grouping**: See metrics broken down by queue
+    - When to use: When comparing performance between different service types or identifying which queues might need additional resources
+    - Example: Grouping by queue might show that your Technical Support queue has a much longer average handle time than other queues, suggesting more complex issues or training needs
+- **Agent grouping**: Compare individual agent performance
+    - When to use: When conducting performance reviews, identifying coaching needs, or recognizing top performers
+    - Example: Grouping by agent might reveal that certain agents have significantly higher customer satisfaction scores. The team could benefit from having those agents share their best practices
+- **Team grouping**: Compare teams using agent hierarchy
+    - When to use: When evaluating team leader effectiveness or comparing performance between different departments
+    - Example: Grouping by team might show that Team A consistently achieves better service levels than Team B, prompting an investigation into different management approaches
+- **Time period grouping**: See how metrics change over different time intervals
+    - When to use: When analyzing trends, identifying patterns, or planning staffing needs
+    - Example: Grouping by hour of day might reveal that handle times increase significantly after 3 pm, suggesting fatigue factors or shift planning opportunities
+- **Channel grouping**: Compare performance across different contact channels
+    - When to use: When evaluating channel strategy or identifying training needs for specific communication methods
+    - Example: Grouping by channel might show that resolution rates are lower for chat than voice, suggesting a need for chat handling process improvements
+- The grouping you choose affects how metrics are calculated (Average handle time grouped by queue shows the average across all agents in that queue, while grouping by agent shows individual agent averages, for example)
+#### Advanced techniques
+- Create reports that compare performance across different dimensions, such as the following:
+    - This week compared to last week
+    - Team A compared to Team B
+    - Morning shift compared to Evening shift
+- For nested grouping, group by multiple factors for deeper insights such as the following:
+    - First by team, then by agent
+    - First by queue, then by time period
+### Report Management, Security and Troubleshooting
+#### Custom report creation
+- To start, navigate to your Amazon Connect log in page. Enter your credentials and sign in
+- From the **Connect Administration console**, choose **Analytics and optimization** from the navigation sidebar. Next, choose **Real-time metrics**
+- From the **Real-time Metrics** page, choose one of the report types shown. They group and order the data in different ways and include different metrics by default. For this demonstration, **Queues** will be chosen.
+- Then, on the **Real-time Metrics Queues** page, you can optionally add more tables to the report by choosing the **New table** menu and choosing the table.
+- Next, to configure the **Queues** table, choose the gear icon in the table header.
+- On the **Time range** tab, choose **Trailing windows for time**, then choose the time range, in hours, for the data to include in the report. This demonstration will use a **1-hour** time range.
+- Optionally, you can choose the **Filters** tab. There, you specify filters to scope the data to be included in the report. The available filters depend on the report type. The following possible filters for the Queues report are shown.
+- Next, on the **Metrics** tab, select the metrics and fields to include in the report. The available metrics and fields depend on the report type and filters that you select. The Amazon Connect Administration guide contains definitions for all available metrics in Connect.
+- When you are finished customizing the report, choose **Apply**.
+- To optionally save your report for future reference, choose **Save report**.
+- In the text box, provide a name for the report. Use a consistent naming convention for your reports.
+- Then, choose **Save**.
+- After you have saved your report, you will see the reports name in the title. Your report is now available for future use, but it is only available to you as the creator.
+- To optionally share your report, return to the Connect Administration console home screen.
+- From the navigation menu, choose **Analytics and optimization** and then choose **Dashboards and reports**.
+- Next, choose the **Real-time metrics** tab, or optionally, choose **All reports**.
+- Then on the **Real-time metrics reports** screen, you will see your saved report.
+- Hover your cursor over the report name to reveal the **Share** and **Delete** functions for the report. Choose the **Share** icon.
+- Next, in the **Share Report** pop-up, for the **Share setting**, turn on **Read-only**. Then, for **Publish report to organization**, turn on **Publish**. You will also notice that the **Save** option is inactive until you choose one or both of the settings.
+- After you have turned on the share settings for your report, choose **Save**.
+- Now on the **Dashboards and reports** page, you will see the report is now published and read-only. Your report is available to all users that have appropriate permissions to view, and you, as the owner, maintain full control. The read-only settings prevent other users from modifying the report
+- Use consistent report naming conventions, for example: "Agent Performance - Team Name," to clearly identify ownership across your organization
+#### Report management best practices
+- **Regular review** – Schedule quarterly reviews of report relevance
+- **Version control** – Consider including version numbers for major updates
+- **Documentation** – Maintain brief descriptions of what each report is designed to show
+- **Organization** – Create folder structures if your environment has many reports
+- **Permission management** – Control who can edit and who can only view reports
+#### Scheduling reports
+- For reports that need to be reviewed regularly, use automated scheduling to help ensure consistent distribution:
+    - Create a new report and save it, or open a saved report
+    - Choose the **Actions** menu and choose **Schedule**
+    - Read and acknowledge the note, which states all individuals who have proper permissions will be able to access the report. If you need to update permissions before scheduling your report, choose Cancel. Otherwise, choose Continue
+    - On the **Recurrence** tab, specify how often this report should be run (for example, weekly on Saturdays). Also set the range (for example, from midnight for the previous 5 days)
+    - On the **Delivery Options** tab, specify a prefix for the location in Amazon S3 to store the report files
+#### Report limitations
+- **Format** – Reports are delivered as CSV files only (no visualizations)
+- **Storage** – Reports are stored in Amazon S3, not emailed directly
+- **Notifications** – There are no automatic notifications when reports are generated
+- **Failure alerts** – There are no alerts if scheduled reports fail to run
+- To overcome these limitations, use the following strategies:
+    - **Email distribution** – Set up an AWS Lambda function to email the CSV when it appears in Amazon S3
+    - **Visualization** – Import scheduled report data into business intelligence tools
+    - **Monitoring** – Create Amazon CloudWatch alerts to monitor for report generation failures
+#### Access control implementation
+- **Security profile permissions**:
+    - Access metrics – Supports users to view metrics data
+    - Create reports – Supports users to build new reports
+    - Edit reports – Supports users to modify existing reports
+    - Publish reports – Who can make reports available to others
+    - Delete reports – Who can remove reports
+- **Role-based access patterns**:
+    - **Viewers** (agents, team leads) – Can only view published reports
+    - **Analysts** (supervisors, analysts) – Can create and edit their own reports
+    - **Publishers** (managers, lead analysts) – Can publish reports for wider use
+    - **Administrators** (admins, directors) – Has full control over all reports
+- Best practices for security permissions:
+    - Apply the principle of least privilege—give users only the permissions they need
+    - Create specialized security profiles for report creators and publishers
+    - Review permissions quarterly to make sure that they remain appropriate
+    - Document your permission structure for consistency
+    - Use groups rather than individual permissions when possible
+#### Metrics troubleshooting
+- No data appearing in reports:
+    - Time range – Confirm the selected period contains activity
+    - Filters – Verify filters aren't too restrictive
+    - Permissions – Confirm you have access to the metrics you're requesting
+    - Data delay – Note that historical metrics might have a slight processing delay
+- Unexpected metric values
+    - Metric definition – Review the exact definition of the metric
+    - Calculation method – Check if grouping affects how the metric is calculated
+    - Time zone – Verify the time zone settings for the report
+    - Filtering impact – Consider if filters are excluding relevant data
+- Common metrics discrepancies
+    - Service level – Remember this is the percentage of contacts answered within the threshold, not the average speed of answer
+    - Occupancy – This excludes any time agents spend in custom states
+    - Abandonment rate – Callbacks don't count as abandoned, which might make this metric look better than expected
+    - Agent activity – Confirm agents are properly logging their activities for accurate reporting
+- Report performance issues
+    - Date range – Try reducing the timespan
+    - Metrics quantity – Reduce the number of metrics included
+    - Grouping complexity – Simplify grouping arrangements
+    - Filter optimization – Use more targeted filters
+    - Browser cache – Clear your browser cache
