@@ -1,0 +1,12 @@
+*credentials*.txt
+*.pem
+*.key
+.env
+.env.local
+*.secret
+aws-credentials/
+node_modules/
+.DS_Store
+*.log
+instance-config.json
+
